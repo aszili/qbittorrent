@@ -1,4 +1,3 @@
-![GitHub Container Registry](https://img.shields.io/github/v/package/aszili/qbittorrent?label=ghcr.io)
 [![Docker Build][gh-actions-image]][gh-actions-url]
 
 # Qbittorrent
