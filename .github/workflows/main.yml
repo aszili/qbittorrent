@@ -1,0 +1,42 @@
+name: Docker Build & Push
+
+on:
+  push:
+    tags:
+      - "*"
+  schedule:
+    - cron: "30 10 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Build the image even if it already exists
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    outputs:
+      TARGET_IMAGE_TAG: ${{ steps.get_tag.outputs.tag }}
+      QBITTORRENT_VERSION: ${{ steps.get_tag.outputs.tag }}
+
+    steps:
+      - name: Get latest Docker Hub tag
+        id: get_tag
+        run: |
+          TAG=$(curl -s "https://registry.hub.docker.com/v2/repositories/11notes/docker-qbittorrent/tags?page_size=100" \
+            | jq -r '.results[].name' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+' \
+            | sort -V \
+            | tail -n 1)
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+  build:
+    needs: initialize
+    uses: aszili/github-actions/.github/workflows/build-docker-image.yml@main
+    with:
+      target_tag: ${{ needs.initialize.outputs.TARGET_IMAGE_TAG }}
+      build_args: QBITTORRENT_VERSION=${{ needs.initialize.outputs.QBITTORRENT_VERSION }}
+      force: ${{ contains(inputs.force, 'true') }}
