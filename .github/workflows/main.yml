@@ -2,6 +2,7 @@ name: Docker Build & Push
 
 permissions:
   contents: read
+  packages: write
   security-events: write
 
 on:
@@ -29,6 +30,7 @@ jobs:
 
   build:
     needs: initialize
+    if: github.event_name == 'push'
     uses: aszili/github-actions/.github/workflows/build-docker-image.yml@main
     with:
       target_tag: ${{ needs.initialize.outputs.version }}
