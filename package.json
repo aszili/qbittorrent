@@ -1,6 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "qbittorrent": "github:qbittorrent/qBittorrent#release-5.2.0"
+    "qbittorrent": "github:qbittorrent/qBittorrent#release-5.2.1"
   }
 }
