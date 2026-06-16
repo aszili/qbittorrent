@@ -21,17 +21,22 @@ on:
         type: boolean
 
 jobs:
-  initialize:
-    uses: aszili/github-actions/.github/workflows/prepare-package-version.yml@main
-    with:
-      package_name: qbittorrent
-      output_env_var: QBITTORRENT_VERSION
-      strip_prefix: release-
+  extract-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract version from Dockerfile
+        id: version
+        run: |
+          VERSION=$(grep -oP 'QBITTORRENT_VERSION=\K[^ ]+' Dockerfile | head -1)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
   build:
-    needs: initialize
+    needs: extract-version
     uses: aszili/github-actions/.github/workflows/build-docker-image.yml@main
     with:
-      target_tag: ${{ needs.initialize.outputs.version }}
-      build_args: QBITTORRENT_VERSION=${{ needs.initialize.outputs.version }}
+      target_tag: ${{ needs.extract-version.outputs.version }}
+      build_args: QBITTORRENT_VERSION=${{ needs.extract-version.outputs.version }}
       force: ${{ contains(inputs.force, 'true') }}
