@@ -14,10 +14,3 @@ updates:
       interval: daily
     assignees:
       - aszili
-
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: daily
-    assignees:
-      - aszili
