@@ -26,11 +26,15 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Extract version from Dockerfile
         id: version
         run: |
-          VERSION=$(grep -oP 'QBITTORRENT_VERSION=\K[^ ]+' Dockerfile | head -1)
+          VERSION=$(grep -oP 'FROM 11notes/qbittorrent:\K[^ ]+' Dockerfile | head -1)
+          if [ -z "$VERSION" ]; then
+            echo "Error: Could not extract version from Dockerfile"
+            exit 1
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
   build:
