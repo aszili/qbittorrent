@@ -1,5 +1,4 @@
-ARG QBITTORRENT_VERSION=5.2.1
-FROM 11notes/qbittorrent:${QBITTORRENT_VERSION} AS builder
+FROM 11notes/qbittorrent:5.2.1 AS builder
 FROM scratch
 
 COPY --from=builder /usr/local/bin/qbittorrent /usr/local/bin/qbittorrent
