@@ -30,7 +30,7 @@ jobs:
       - name: Extract version from Dockerfile
         id: version
         run: |
-          VERSION=$(grep -oP 'FROM 11notes/qbittorrent:\K[^ ]+' Dockerfile | head -1)
+          VERSION=$(grep -oP 'FROM .*11notes/qbittorrent:\K[^ ]+' Dockerfile | head -1)
           if [ -z "$VERSION" ]; then
             echo "Error: Could not extract version from Dockerfile"
             exit 1
