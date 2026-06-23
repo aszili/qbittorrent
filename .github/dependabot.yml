@@ -1,10 +1,5 @@
 version: 2
 
-registries:
-  ghcr:
-    type: docker-registry
-    url: https://ghcr.io
-
 updates:
   - package-ecosystem: github-actions
     directory: /
@@ -19,5 +14,3 @@ updates:
       interval: daily
     assignees:
       - aszili
-    registries:
-      - ghcr
