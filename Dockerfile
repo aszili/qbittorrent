@@ -1,4 +1,4 @@
-FROM ghcr.io/11notes/qbittorrent:5.2.1 AS builder
+FROM ghcr.io/11notes/qbittorrent:5.2.3 AS builder
 FROM scratch
 
 COPY --from=builder /usr/local/bin/qbittorrent /usr/local/bin/qbittorrent
